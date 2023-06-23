@@ -1,0 +1,30 @@
+services:
+  messaging-service:
+    build: ./messaging-service
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DATABASE_PORT=${MESSAGING_DATABASE_PORT}
+      - DATABASE_USER=${MESSAGING_DATABASE_USER}
+      - DATABASE_PASSWORD=${MESSAGING_DATABASE_PASSWORD}
+      - DATABASE_DB=${MESSAGING_DATABASE_DEFAULT_DB}
+    depends_on:
+      messaging-database:
+        condition: service_healthy
+
+  messaging-database:
+    image: postgres:latest
+    container_name: messaging-database
+    user: postgres
+    environment:
+      - POSTGRES_USER=${MESSAGING_DATABASE_USER}
+      - POSTGRES_PASSWORD=${MESSAGING_DATABASE_PASSWORD}
+      - POSTGRES_DB=${MESSAGING_DATABASE_DEFAULT_DB}
+    expose:
+      - ${MESSAGING_DATABASE_PORT}
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
