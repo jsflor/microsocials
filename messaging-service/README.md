@@ -8,6 +8,12 @@ It uses Gin and Gorm
 go mod tidy
 ```
 
+## Test app
+
+```bash
+go test -v ./..
+```
+
 ## Run service
 
 ```bash

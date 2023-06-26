@@ -11,7 +11,7 @@ import (
 func GetMessages(c *gin.Context) {
 	var messages []models.Message
 
-	if err := models.DB.Find(&messages).Error; err != nil {
+	if err := models.GetMessages(&messages).Error; err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -23,7 +23,7 @@ func GetMessages(c *gin.Context) {
 func GetMessageByID(c *gin.Context) {
 	var message models.Message
 
-	if err := models.DB.First(&message, c.Param("id")).Error; err != nil {
+	if err := models.GetMessageByID(&message, c.Param("id")).Error; err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -41,7 +41,8 @@ func CreateMessage(c *gin.Context) {
 	}
 
 	message := models.Message{Text: input.Text, From: input.From, To: input.To}
-	if err := models.DB.Create(&message).Error; err != nil {
+
+	if err := models.CreateMessage(&message).Error; err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -53,7 +54,7 @@ func CreateMessage(c *gin.Context) {
 func UpdateMessage(c *gin.Context) {
 	var message models.Message
 
-	if err := models.DB.First(&message, c.Param("id")).Error; err != nil {
+	if err := models.GetMessageByID(&message, c.Param("id")).Error; err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -65,7 +66,7 @@ func UpdateMessage(c *gin.Context) {
 		return
 	}
 
-	if err := models.DB.Model(&message).Updates(input).Error; err != nil {
+	if err := models.UpdateMessage(&message, &input).Error; err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -77,12 +78,12 @@ func UpdateMessage(c *gin.Context) {
 func DeleteMessage(c *gin.Context) {
 	var message models.Message
 
-	if err := models.DB.First(&message, c.Param("id")).Error; err != nil {
+	if err := models.GetMessageByID(&message, c.Param("id")).Error; err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := models.DB.Delete(&message).Error; err != nil {
+	if err := models.DeleteMessage(&message).Error; err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

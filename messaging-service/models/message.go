@@ -20,3 +20,23 @@ type UpdateMessageInput struct {
 	From string `json:"from"`
 	To   string `json:"to"`
 }
+
+func GetMessages(messages *[]Message) *gorm.DB {
+	return DB.Find(&messages)
+}
+
+func GetMessageByID(message *Message, id string) *gorm.DB {
+	return DB.First(&message, id)
+}
+
+func CreateMessage(message *Message) *gorm.DB {
+	return DB.Create(&message)
+}
+
+func UpdateMessage(message *Message, input *UpdateMessageInput) *gorm.DB {
+	return DB.Model(&message).Updates(input)
+}
+
+func DeleteMessage(message *Message) *gorm.DB {
+	return DB.Delete(&message)
+}

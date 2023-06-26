@@ -10,15 +10,22 @@ import (
 )
 
 func main() {
-	router := gin.Default()
-
 	models.ConnectDatabase()
-
-	router.GET("/messages", controllers.GetMessages)
-	router.GET("/messages/:id", controllers.GetMessageByID)
-	router.POST("/messages", controllers.CreateMessage)
-	router.PUT("/messages/:id", controllers.UpdateMessage)
-	router.DELETE("/messages/:id", controllers.DeleteMessage)
+	router := setUpRouter()
 
 	router.Run(fmt.Sprintf("0.0.0.0:%s", lib.GetEnv("PORT", "8080")))
+}
+
+func setUpRouter() *gin.Engine {
+	router := gin.Default()
+	setUpRoutes(router)
+	return router
+}
+
+func setUpRoutes(r *gin.Engine) {
+	r.GET("/messages", controllers.GetMessages)
+	r.GET("/messages/:id", controllers.GetMessageByID)
+	r.POST("/messages", controllers.CreateMessage)
+	r.PUT("/messages/:id", controllers.UpdateMessage)
+	r.DELETE("/messages/:id", controllers.DeleteMessage)
 }
