@@ -11,10 +11,10 @@ import (
 
 var DB *gorm.DB
 
-var dbHost = lib.GetEnv("MESSAGING_DATABASE_HOST", "messaging-database")
-var dbUser = lib.GetEnv("MESSAGING_DATABASE_USER", "postgres")
-var dbPassword = lib.GetEnv("MESSAGING_DATABASE_PASSWORD", "postgres")
-var dbName = lib.GetEnv("DATABASE_DB", "postgres")
+var dbHost = lib.GetEnv("DATABASE_HOST", "messaging-database")
+var dbUser = lib.GetEnv("DATABASE_USER", "postgres")
+var dbPassword = lib.GetEnv("DATABASE_PASSWORD", "postgres")
+var dbName = lib.GetEnv("DATABASE_NAME", "postgres")
 var dbPort = lib.GetEnv("DATABASE_PORT", "5432")
 
 func ConnectDatabase() {

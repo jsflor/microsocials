@@ -1,14 +1,15 @@
 services:
   messaging-service:
-    build: ./messaging-service
+    build:
+      context: ./messaging-service
+      args:
+        - PORT=8080
+        - DATABASE_PORT=${MESSAGING_DATABASE_PORT}
+        - DATABASE_USER=${MESSAGING_DATABASE_USER}
+        - DATABASE_PASSWORD=${MESSAGING_DATABASE_PASSWORD}
+        - DATABASE_NAME=${MESSAGING_DATABASE_DEFAULT_DB}
     ports:
       - "8080:8080"
-    environment:
-      - PORT=8080
-      - DATABASE_PORT=${MESSAGING_DATABASE_PORT}
-      - DATABASE_USER=${MESSAGING_DATABASE_USER}
-      - DATABASE_PASSWORD=${MESSAGING_DATABASE_PASSWORD}
-      - DATABASE_DB=${MESSAGING_DATABASE_DEFAULT_DB}
     depends_on:
       messaging-database:
         condition: service_healthy
